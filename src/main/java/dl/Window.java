@@ -66,7 +66,7 @@ public class Window {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+        glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
 
         //Create the Window
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
@@ -75,10 +75,14 @@ public class Window {
         }
 
         //Setting Mouse and Keyboard listeners callback
+        //Mouse
         glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
         glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
         glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
+        //Keyboard
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
+        //Joystick
+        glfwSetJoystickCallback(JoystickListener::joystickCallback);
 
         //Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
@@ -113,6 +117,8 @@ public class Window {
             if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
                 fadeToBlack = true;
             }
+
+            System.out.println(glfwGetJoystickName(GLFW_JOYSTICK_2));
 
             glfwSwapBuffers(glfwWindow);
         }
