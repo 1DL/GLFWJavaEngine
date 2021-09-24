@@ -39,7 +39,7 @@ public class Window {
     }
 
     public void run() {
-        System.out.println("Hello LWGJL " + Version.getVersion() + "!");
+        System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
         init();
         loop();
@@ -48,7 +48,7 @@ public class Window {
         glfwFreeCallbacks(glfwWindow);
         glfwDestroyWindow(glfwWindow);
 
-        //Terminante GLFW and the free the error callback
+        //Terminate GLFW and the free the error callback
         glfwTerminate();
         glfwSetErrorCallback(null).free();
     }
@@ -118,7 +118,7 @@ public class Window {
                 fadeToBlack = true;
             }
 
-            System.out.println(glfwGetJoystickName(GLFW_JOYSTICK_2));
+            //System.out.println(glfwGetJoystickName(GLFW_JOYSTICK_2));
 
             glfwSwapBuffers(glfwWindow);
         }
