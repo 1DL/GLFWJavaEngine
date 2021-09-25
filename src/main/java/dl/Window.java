@@ -4,6 +4,8 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import java.nio.ByteBuffer;
+
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -118,7 +120,15 @@ public class Window {
                 fadeToBlack = true;
             }
 
-            //System.out.println(glfwGetJoystickName(GLFW_JOYSTICK_2));
+            if (KeyListener.isKeyPressed(GLFW_KEY_B)) {
+                JoystickListener.isButtonPressed(0, GLFW_JOYSTICK_2);
+            }
+
+            if (KeyListener.isKeyPressed(GLFW_KEY_J)) {
+                JoystickListener.getAxis(0, GLFW_JOYSTICK_2);
+            }
+
+
 
             glfwSwapBuffers(glfwWindow);
         }
