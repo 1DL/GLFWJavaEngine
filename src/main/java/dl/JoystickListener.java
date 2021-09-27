@@ -56,7 +56,7 @@ public class JoystickListener {
             } else {
                 get().buttonPressed[buttonId] = false;
             }
-            System.out.print("Btn ID: " + buttonId + " - " + get().buttonPressed[buttonId]);
+            System.out.println("Btn ID: " + buttonId + " - " + get().buttonPressed[buttonId]);
             buttonId++;
         }
 
@@ -69,7 +69,7 @@ public class JoystickListener {
         while (joyAxis.hasRemaining()) {
             float axis = joyAxis.get();
             get().joystickAxes[axisId] =  round2(axis, 2);
-            System.out.print("Axis ID: " + axisId + " - " + get().joystickAxes[axisId]);
+            System.out.println("Axis ID: " + axisId + " - " + get().joystickAxes[axisId]);
             axisId++;
         }
     }
