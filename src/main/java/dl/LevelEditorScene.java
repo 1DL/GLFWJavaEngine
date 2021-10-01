@@ -19,10 +19,10 @@ public class LevelEditorScene extends Scene {
 
     private float[] vertexArray = {
         //position                      //color                     // UV Coordinates
-        100.5f  , 0.5f  , 0.0f,         1.0f, 0.0f, 0.0f, 1.0f,     1, 0,   //Bottom Right
-        0.5f    , 100.5f, 0.0f,         0.0f, 1.0f, 0.0f, 1.0f,     0, 1,   //top left
-        100.5f  , 100.5f, 0.0f,         1.0f, 0.0f, 1.0f, 1.0f,     1, 1,   //top right
-        0.5f    , 0.5f  , 0.0f,         1.0f, 1.0f, 0.0f, 1.0f,     0, 0,   //Bottom left
+        100.0f  , 0.0f  , 0.0f,         1.0f, 0.0f, 0.0f, 1.0f,     1, 0,   //Bottom Right
+        0.0f    , 100.0f, 0.0f,         0.0f, 1.0f, 0.0f, 1.0f,     0, 1,   //top left
+        100.0f  , 100.0f, 0.0f,         1.0f, 0.0f, 1.0f, 1.0f,     1, 1,   //top right
+        0.0f    , 0.0f  , 0.0f,         1.0f, 1.0f, 0.0f, 1.0f,     0, 0,   //Bottom left
     };
 
     //IMPORTANT: Must be in counter-clockwise order
@@ -52,7 +52,7 @@ public class LevelEditorScene extends Scene {
         this.camera = new Camera(new Vector2f());
         defaultShader = new Shader("assets/shaders/default.glsl");
         defaultShader.compile();
-        this.testTexture = new Texture("assets/images/testImage.jpg");
+        this.testTexture = new Texture("assets/images/testImage.png");
 
 
 
