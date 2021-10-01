@@ -52,7 +52,7 @@ public class LevelEditorScene extends Scene {
         this.camera = new Camera(new Vector2f());
         defaultShader = new Shader("assets/shaders/default.glsl");
         defaultShader.compile();
-        this.testTexture = new Texture("assets/images/testImage.png");
+        this.testTexture = new Texture("assets/images/testImage.jpg");
 
 
 
