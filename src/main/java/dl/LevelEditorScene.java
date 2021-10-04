@@ -64,7 +64,6 @@ public class LevelEditorScene extends Scene {
         defaultShader = new Shader("assets/shaders/default.glsl");
         defaultShader.compile();
         this.testTexture = new Texture("assets/images/testImage.jpg");
-        //Test git token
 
 
 
