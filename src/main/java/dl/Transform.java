@@ -20,7 +20,7 @@ public class Transform {
     }
 
     public void init(Vector2f position, Vector2f scale) {
-        this.position = new Vector2f();
-        this.scale = new Vector2f();
+        this.position = position;
+        this.scale = scale;
     }
 }

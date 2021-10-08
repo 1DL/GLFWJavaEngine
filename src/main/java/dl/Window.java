@@ -5,8 +5,6 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import util.Time;
 
-import java.nio.ByteBuffer;
-
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -19,6 +17,7 @@ public class Window {
     private long glfwWindow;
 
     public float r, g, b, a;
+    private boolean fadeToBlack = false;
 
     private static Window window = null;
 
@@ -47,7 +46,7 @@ public class Window {
                 currentScene.start();
                 break;
             default:
-                assert false : "Unknown scene 1'" + newScene +"'";
+                assert false : "Unknown scene '" + newScene +"'";
                 break;
         }
     }
@@ -92,7 +91,7 @@ public class Window {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
+        glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
         //Create the Window
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
@@ -113,7 +112,7 @@ public class Window {
         //Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
         //Enable v-sync, 1 for on
-        glfwSwapInterval(1);
+        glfwSwapInterval(0);
 
         //Make the window visible
         glfwShowWindow(glfwWindow);
@@ -130,7 +129,7 @@ public class Window {
 
     public void loop() {
         float beginTime = Time.getTime();
-        float endTime = Time.getTime();
+        float endTime;
         float dt = -1.0f;
 
         while(!glfwWindowShouldClose(glfwWindow)) {
@@ -151,14 +150,11 @@ public class Window {
                 currentScene.update(dt);
             }
 
-
-
             glfwSwapBuffers(glfwWindow);
 
             endTime = Time.getTime();
             dt = endTime - beginTime;
             beginTime = endTime;
-
         }
     }
 }

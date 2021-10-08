@@ -22,6 +22,6 @@ public class SpriteRenderer extends Component {
     }
 
     public Vector4f getColor() {
-        return color;
+        return this.color;
     }
 }

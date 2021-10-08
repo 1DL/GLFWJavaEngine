@@ -4,18 +4,18 @@ import components.SpriteRenderer;
 import dl.Window;
 import org.joml.Vector4f;
 
-import java.util.Vector;
-
 import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class RenderBatch {
-    //Vertex
-    //======
-    //Pos               Color
-    //float, float,     float, float, float, float
+    // Vertex
+    // ======
+    // Pos               Color
+    // float, float,     float, float, float, float
     private final int POS_SIZE = 2;
     private final int COLOR_SIZE = 4;
 
@@ -49,6 +49,7 @@ public class RenderBatch {
     public void start() {
         // Generate and bind a Vertex Array Object (VAO)
         vaoID = glGenVertexArrays();
+        glBindVertexArray(vaoID);
 
         // Allocate space for the Vertices
         vboID = glGenBuffers();
@@ -114,7 +115,7 @@ public class RenderBatch {
 
         Vector4f color = sprite.getColor();
 
-        //Add vertice with the appropriate properties
+        //Add vertices with the appropriate properties
         float xAdd = 1.0f;
         float yAdd = 1.0f;
         for (int i = 0; i < 4; i++) {
@@ -154,7 +155,7 @@ public class RenderBatch {
         int offsetArrayIndex = 6 * index;
         int offset = 4 * index;
 
-        // 3, 2, 0, 0, 2, 1         7, 6, 4, 4, 6, 5
+        // 3, 2, 0, 0, 2, 1        7, 6, 4, 4, 6, 5
         // Triangle 1
         elements[offsetArrayIndex] = offset + 3;
         elements[offsetArrayIndex + 1] = offset + 2;
