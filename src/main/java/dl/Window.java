@@ -24,12 +24,12 @@ public class Window {
     private static Scene currentScene;
 
     private Window() {
-        this.width = 1280;
-        this.height = 720;
+        this.width = 1920;
+        this.height = 1080;
         this.title = "Mario - DL Engine";
-        this.r = 1;
-        this.g = 1;
-        this.b = 1;
+        this.r = 0;
+        this.g = 0;
+        this.b = 0;
         this.a = 1;
     }
 

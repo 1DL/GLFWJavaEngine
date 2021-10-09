@@ -3,6 +3,7 @@ package dl;
 import components.SpriteRenderer;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import util.AssetPool;
 
 public class LevelEditorScene extends Scene {
 
@@ -21,7 +22,7 @@ public class LevelEditorScene extends Scene {
         float totalHeight = (float)(300 - yOffset * 2);
         float sizeX = totalWidth / 100.0f;
         float sizeY = totalHeight / 100.0f;
-        float padding = 3;
+        float padding = 0;
 
         for (int x=0; x < 100; x++) {
             for (int y=0; y < 100; y++) {
@@ -33,6 +34,13 @@ public class LevelEditorScene extends Scene {
                 this.addGameObjectToScene(go);
             }
         }
+
+        loadResources();
+    }
+
+    private void loadResources() {
+        AssetPool.getShader("assets/shaders/default.glsl");
+
     }
 
     @Override
