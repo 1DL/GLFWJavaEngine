@@ -26,9 +26,9 @@ public class Window {
         this.width = 1920;
         this.height = 1080;
         this.title = "Mario - DL Engine";
-        this.r = 0;
-        this.g = 0;
-        this.b = 0;
+        this.r = 0.7f;
+        this.g = 0.2f;
+        this.b = 0.1f;
         this.a = 1;
     }
 
