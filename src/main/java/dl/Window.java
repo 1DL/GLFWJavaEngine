@@ -26,9 +26,9 @@ public class Window {
         this.width = 1920;
         this.height = 1080;
         this.title = "Mario - DL Engine";
-        this.r = 0.7f;
-        this.g = 0.2f;
-        this.b = 0.1f;
+        this.r = 1;
+        this.g = 1;
+        this.b = 1;
         this.a = 1;
     }
 
@@ -122,6 +122,9 @@ public class Window {
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
         GL.createCapabilities();
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
         Window.changeScene(0);
     }
