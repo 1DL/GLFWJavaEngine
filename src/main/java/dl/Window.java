@@ -108,6 +108,11 @@ public class Window {
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
         //Joystick
         glfwSetJoystickCallback(JoystickListener::joystickCallback);
+        //Screen resize callback
+        glfwSetWindowSizeCallback(glfwWindow, (w, newWidth, newHeight) -> {
+            Window.setWidth(newWidth);
+            Window.setHeight(newHeight);
+        });
 
         //Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
@@ -170,5 +175,13 @@ public class Window {
 
     public static int getHeight() {
         return get().height;
+    }
+
+    public static void setWidth(int newWidth) {
+        get().width = newWidth;
+    }
+
+    public static void setHeight(int newHeight) {
+        get().height = newHeight;
     }
 }
