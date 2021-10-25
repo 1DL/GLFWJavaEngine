@@ -1,11 +1,13 @@
 package dl;
 
+import org.lwjgl.PointerBuffer;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.glfwGetMonitors;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -15,6 +17,8 @@ public class Window {
     private String title;
     private long glfwWindow;
     private ImGuiLayer imguiLayer;
+    private long glfwMonitor;
+    private long[] glfwAvailableMonitors;
 
     public float r, g, b, a;
     private boolean fadeToBlack = false;
@@ -24,8 +28,8 @@ public class Window {
     private static Scene currentScene;
 
     private Window() {
-        this.width = 1920;
-        this.height = 1080;
+        this.width = 1366;
+        this.height = 768;
         this.title = "Mario - DL Engine";
         this.r = 1;
         this.g = 1;
@@ -92,6 +96,20 @@ public class Window {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+
+        //Configure monitor
+        System.out.println("All monitors:");
+
+        PointerBuffer allMonitors = glfwGetMonitors();
+
+        while (allMonitors.hasRemaining()) {
+            long monitor = allMonitors.get();
+            System.out.println("monitor ID: " + monitor);
+        }
+
+        glfwMonitor = glfwGetPrimaryMonitor();
+        System.out.println("Primary monitor:");
+        System.out.println(glfwMonitor);
 
         //Create the Window
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
