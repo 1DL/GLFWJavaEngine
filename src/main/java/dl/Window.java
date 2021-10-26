@@ -170,19 +170,20 @@ public class Window {
             //Poll events
             glfwPollEvents();
 
-            count++;
-            System.out.println(count);
+//            count++;
+            //System.out.println(count);
 
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            if (count == 20000) {
-                setFullscreen(!isFullscreen);
-                count = 0;
-            }
-//
+//            if (count == 20000) {
+//                setFullscreen(!isFullscreen);
+//                count = 0;
+//            }
+////
 //            if (KeyListener.isKeyPressed(GLFW_KEY_B)) {
-//                JoystickListener.isButtonPressed(0, GLFW_JOYSTICK_2);
+//                System.out.println("hey teste");
+//                //JoystickListener.isButtonPressed(0, GLFW_JOYSTICK_2);
 //            }
 //
 //            if (KeyListener.isKeyPressed(GLFW_KEY_J)) {
@@ -194,7 +195,7 @@ public class Window {
                 currentScene.update(dt);
             }
 
-            this.imguiLayer.update(dt);
+            this.imguiLayer.update(dt, currentScene);
             glfwSwapBuffers(glfwWindow);
 
             endTime = (float)glfwGetTime();
@@ -242,13 +243,10 @@ public class Window {
             } catch (Exception ex) {
                 assert false : "Error: Failed to get inside fullscreen.";
             }
-
-
             isFullscreen = true;
         } else {
             // restore last window size and position
             try {
-
                 glfwSetWindowMonitor(glfwWindow, NULL,  windowedXPos[0], windowedYPos[0], windowedXSize[0], windowedYSize[0], 0 );
             } catch (Exception ex) {
                 assert false : "Error: Failed to exit from fullscreen.";
