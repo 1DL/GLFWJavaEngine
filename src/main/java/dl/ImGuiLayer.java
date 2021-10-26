@@ -141,10 +141,10 @@ public class ImGuiLayer {
             }
         });
 
-//        // ------------------------------------------------------------
-//        // Fonts configuration
-//        // Read: https://raw.githubusercontent.com/ocornut/imgui/master/docs/FONTS.txt
-//
+        // ------------------------------------------------------------
+        // Fonts configuration
+        // Read: https://raw.githubusercontent.com/ocornut/imgui/master/docs/FONTS.txt
+
         final ImFontAtlas fontAtlas = io.getFonts();
         final ImFontConfig fontConfig = new ImFontConfig(); // Natively allocated object, should be explicitly destroyed
 
@@ -153,7 +153,7 @@ public class ImGuiLayer {
 
         // Fonts merge example
         fontConfig.setPixelSnapH(true);
-        fontAtlas.addFontFromFileTTF("assets/fonts/segoeui.ttf", 32, fontConfig);
+        fontAtlas.addFontFromFileTTF("assets/fonts/segoeui.ttf", 24, fontConfig);
 
         fontConfig.destroy(); // After all fonts were added we don't need this config more
 
@@ -190,7 +190,7 @@ public class ImGuiLayer {
         // We SHOULD call those methods to update Dear ImGui state for the current frame
         final ImGuiIO io = ImGui.getIO();
         io.setDisplaySize(winWidth[0], winHeight[0]);
-        io.setDisplayFramebufferScale(1,1);
+        io.setDisplayFramebufferScale(1f, 1f);
         io.setMousePos((float) mousePosX[0], (float) mousePosY[0]);
         io.setDeltaTime(deltaTime);
 
@@ -211,5 +211,4 @@ public class ImGuiLayer {
         imGuiGl3.dispose();
         ImGui.destroyContext();
     }
-
 }

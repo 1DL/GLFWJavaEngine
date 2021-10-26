@@ -31,7 +31,7 @@ public class LevelEditorScene extends Scene {
 
         obj1 = new GameObject("Object 1", new Transform(new Vector2f(200,100),
                 new Vector2f(256,256)), 2);
-        obj1.addComponent(new SpriteRenderer(new Vector4f(1,0,0,0)));
+        obj1.addComponent(new SpriteRenderer(new Vector4f(1, 0, 0, 1)));
         this.addGameObjectToScene(obj1);
         this.activeGameObject = obj1;
 
@@ -54,7 +54,6 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void update(float dt) {
-        //System.out.println("FPS: " + (1.0f / dt));
 
         for (GameObject go : this.gameObjects) {
             go.update(dt);
@@ -67,5 +66,6 @@ public class LevelEditorScene extends Scene {
     public void imgui() {
         ImGui.begin("Test window");
         ImGui.text("Some random text");
+        ImGui.end();
     }
 }
