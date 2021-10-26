@@ -8,6 +8,8 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import util.AssetPool;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_B;
+
 public class LevelEditorScene extends Scene {
 
     private GameObject obj1;
@@ -52,7 +54,7 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void update(float dt) {
-        System.out.println("FPS: " + (1.0f / dt));
+        //System.out.println("FPS: " + (1.0f / dt));
 
         for (GameObject go : this.gameObjects) {
             go.update(dt);

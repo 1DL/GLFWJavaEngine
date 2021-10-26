@@ -1,13 +1,14 @@
 package dl;
 
-import org.lwjgl.PointerBuffer;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import util.MonitorHandler;
+
+import java.util.ArrayList;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.glfwGetMonitors;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -17,8 +18,15 @@ public class Window {
     private String title;
     private long glfwWindow;
     private ImGuiLayer imguiLayer;
-    private long glfwMonitor;
-    private long[] glfwAvailableMonitors;
+
+    //Monitor related
+    private boolean isFullscreen = false;
+    private int[] windowedXSize = {0};
+    private int[] windowedYSize = {0};
+    private int[] windowedXPos = {0};
+    private int[] windowedYPos = {0};
+    private MonitorHandler monitorHandler;
+
 
     public float r, g, b, a;
     private boolean fadeToBlack = false;
@@ -28,8 +36,8 @@ public class Window {
     private static Scene currentScene;
 
     private Window() {
-        this.width = 1366;
-        this.height = 768;
+        this.width = 1280;
+        this.height = 720;
         this.title = "Mario - DL Engine";
         this.r = 1;
         this.g = 1;
@@ -97,22 +105,19 @@ public class Window {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
-        //Configure monitor
-        System.out.println("All monitors:");
-
-        PointerBuffer allMonitors = glfwGetMonitors();
-
-        while (allMonitors.hasRemaining()) {
-            long monitor = allMonitors.get();
-            System.out.println("monitor ID: " + monitor);
-        }
-
-        glfwMonitor = glfwGetPrimaryMonitor();
-        System.out.println("Primary monitor:");
-        System.out.println(glfwMonitor);
+        //Configure monitors
+        monitorHandler = new MonitorHandler();
+        //Set primary monitor
+        monitorHandler.initPrimary();
 
         //Create the Window
+//        glfwWindow = glfwCreateWindow(monitorHandler.getCurrentVideoMode().width(),
+//                monitorHandler.getCurrentVideoMode().height(), this.title, monitorHandler.getGlfwMonitor(), NULL);
+
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
+
+        //setFullscreen(true);
+
         if (glfwWindow == NULL){
             throw new IllegalStateException("Failed to create the GLFW window.");
         }
@@ -155,6 +160,7 @@ public class Window {
         Window.changeScene(0);
     }
 
+    int count = 0;
     public void loop() {
         float beginTime = (float)glfwGetTime();
         float endTime;
@@ -164,8 +170,16 @@ public class Window {
             //Poll events
             glfwPollEvents();
 
+            count++;
+            System.out.println(count);
+
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            if (count == 20000) {
+                setFullscreen(!isFullscreen);
+                count = 0;
+            }
 //
 //            if (KeyListener.isKeyPressed(GLFW_KEY_B)) {
 //                JoystickListener.isButtonPressed(0, GLFW_JOYSTICK_2);
@@ -174,6 +188,8 @@ public class Window {
 //            if (KeyListener.isKeyPressed(GLFW_KEY_J)) {
 //                JoystickListener.getAxis(0, GLFW_JOYSTICK_2);
 //            }
+
+
             if (dt >= 0) {
                 currentScene.update(dt);
             }
@@ -201,5 +217,43 @@ public class Window {
 
     public static void setHeight(int newHeight) {
         get().height = newHeight;
+    }
+
+    public boolean isFullscreen() {
+        return glfwGetWindowMonitor(glfwWindow) != NULL;
+    }
+
+    public void setFullscreen(boolean fullscreen){
+        if (isFullscreen() == fullscreen) {
+            return;
+        }
+        if (fullscreen) {
+            // backup window position and window size
+            glfwGetWindowPos(glfwWindow, windowedXPos, windowedYPos);
+            glfwGetWindowSize(glfwWindow, windowedXSize, windowedYSize);
+
+            // get resolution of monitor
+
+            // switch to full screen
+            try {
+                glfwSetWindowMonitor(glfwWindow, monitorHandler.getGlfwMonitor(), 0, 0,
+                        monitorHandler.getCurrentVideoMode().width(), monitorHandler.getCurrentVideoMode().width(),
+                        monitorHandler.getCurrentVideoMode().refreshRate());
+            } catch (Exception ex) {
+                assert false : "Error: Failed to get inside fullscreen.";
+            }
+
+
+            isFullscreen = true;
+        } else {
+            // restore last window size and position
+            try {
+
+                glfwSetWindowMonitor(glfwWindow, NULL,  windowedXPos[0], windowedYPos[0], windowedXSize[0], windowedYSize[0], 0 );
+            } catch (Exception ex) {
+                assert false : "Error: Failed to exit from fullscreen.";
+            }
+            isFullscreen = false;
+        }
     }
 }
