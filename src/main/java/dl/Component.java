@@ -2,7 +2,7 @@ package dl;
 
 public abstract class Component {
 
-    public GameObject gameObject = null;
+    public transient GameObject gameObject = null;
 
     public void start() {
 
