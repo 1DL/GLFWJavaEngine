@@ -11,15 +11,15 @@ public class Sprite {
             new Vector2f(1, 0),
             new Vector2f(0, 0),
             new Vector2f(0, 1)
-        };
+    };
 
 //    public Sprite(Texture texture) {
 //        this.texture = texture;
 //        Vector2f[] texCoords = {
-//            new Vector2f(1, 1),
-//            new Vector2f(1, 0),
-//            new Vector2f(0, 0),
-//            new Vector2f(0, 1)
+//                new Vector2f(1, 1),
+//                new Vector2f(1, 0),
+//                new Vector2f(0, 0),
+//                new Vector2f(0, 1)
 //        };
 //        this.texCoords = texCoords;
 //    }
@@ -37,7 +37,7 @@ public class Sprite {
         return this.texCoords;
     }
 
-    public void setTexture(Texture tex){
+    public void setTexture(Texture tex) {
         this.texture = tex;
     }
 

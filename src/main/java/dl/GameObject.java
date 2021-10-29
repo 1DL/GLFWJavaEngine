@@ -49,7 +49,7 @@ public class GameObject {
         }
     }
 
-    public void addComponent (Component c ) {
+    public void addComponent(Component c) {
         this.components.add(c);
         c.gameObject = this;
     }

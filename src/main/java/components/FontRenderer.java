@@ -2,6 +2,8 @@ package components;
 
 import dl.Component;
 
+import java.awt.font.FontRenderContext;
+
 public class FontRenderer extends Component {
 
     @Override

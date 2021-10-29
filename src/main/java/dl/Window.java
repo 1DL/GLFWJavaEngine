@@ -81,25 +81,25 @@ public class Window {
         init();
         loop();
 
-        //Free the memory
+        // Free the memory
         glfwFreeCallbacks(glfwWindow);
         glfwDestroyWindow(glfwWindow);
 
-        //Terminate GLFW and the free the error callback
+        // Terminate GLFW and the free the error callback
         glfwTerminate();
         glfwSetErrorCallback(null).free();
     }
 
     public void init() {
-        //Setup an error callback
+        // Setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
 
-        //Initialize GLFW
+        // Initialize GLFW
         if (!glfwInit()) {
-            throw new IllegalStateException("Unable to initialize GLFW");
+            throw new IllegalStateException("Unable to initialize GLFW.");
         }
 
-        //Configure GLFW
+        // Configure GLFW
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
@@ -137,12 +137,12 @@ public class Window {
             Window.setHeight(newHeight);
         });
 
-        //Make the OpenGL context current
+        // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
-        //Enable v-sync, 1 for on
-        glfwSwapInterval(0);
+        // Enable v-sync
+        glfwSwapInterval(1);
 
-        //Make the window visible
+        // Make the window visible
         glfwShowWindow(glfwWindow);
 
         // This line is critical for LWJGL's interoperation with GLFW's

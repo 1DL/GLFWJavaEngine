@@ -32,7 +32,8 @@ uniform sampler2D uTextures[8];
 
 out vec4 color;
 
-void main () {
+void main()
+{
     switch (int(fTexId)) {
         case 0:
         color = fColor;

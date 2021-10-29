@@ -7,7 +7,7 @@ public class MouseListener {
     private static MouseListener instance;
     private double scrollX, scrollY;
     private double xPos, yPos, lastY, lastX;
-    private boolean mouseButtonPressed[] = new boolean[5];
+    private boolean mouseButtonPressed[] = new boolean[3];
     private boolean isDragging;
 
     private MouseListener() {
@@ -36,7 +36,7 @@ public class MouseListener {
     }
 
     public static void mouseButtonCallback(long window, int button, int action, int mods) {
-        if(action == GLFW_PRESS) {
+        if (action == GLFW_PRESS) {
             if (button < get().mouseButtonPressed.length) {
                 get().mouseButtonPressed[button] = true;
             }
@@ -69,11 +69,11 @@ public class MouseListener {
     }
 
     public static float getDx() {
-        return (float) (get().lastX - get().xPos);
+        return (float)(get().lastX - get().xPos);
     }
 
     public static float getDy() {
-        return (float) (get().lastY - get().yPos);
+        return (float)(get().lastY - get().yPos);
     }
 
     public static float getScrollX() {

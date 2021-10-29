@@ -25,8 +25,7 @@ public class Transform {
     }
 
     public Transform copy() {
-        Transform t = new Transform(new Vector2f(this.position), new Vector2f(this.scale));
-        return t;
+        return new Transform(new Vector2f(this.position), new Vector2f(this.scale));
     }
 
     public void copy(Transform to) {

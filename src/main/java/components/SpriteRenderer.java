@@ -1,15 +1,15 @@
 package components;
 
+import imgui.ImGui;
 import dl.Component;
 import dl.Transform;
-import imgui.ImGui;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import renderer.Texture;
 
 public class SpriteRenderer extends Component {
 
-    private Vector4f color = new Vector4f(1,1,1,1);
+    private Vector4f color = new Vector4f(1, 1, 1, 1);
     private Sprite sprite = new Sprite();
 
     private transient Transform lastTransform;
@@ -23,7 +23,7 @@ public class SpriteRenderer extends Component {
 //
 //    public SpriteRenderer(Sprite sprite) {
 //        this.sprite = sprite;
-//        this.color = new Vector4f(1,1,1,1);
+//        this.color = new Vector4f(1, 1, 1, 1);
 //        this.isDirty = true;
 //    }
 
@@ -33,7 +33,7 @@ public class SpriteRenderer extends Component {
     }
 
     @Override
-    public void update(float dt){
+    public void update(float dt) {
         if (!this.lastTransform.equals(this.gameObject.transform)) {
             this.gameObject.transform.copy(this.lastTransform);
             isDirty = true;
