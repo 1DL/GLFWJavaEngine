@@ -36,8 +36,8 @@ public class Window {
     private static Scene currentScene;
 
     private Window() {
-        this.width = 1280;
-        this.height = 720;
+        this.width = 1920;
+        this.height = 1080;
         this.title = "Mario - DL Engine";
         this.r = 1;
         this.g = 1;
@@ -140,7 +140,7 @@ public class Window {
         // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
         // Enable v-sync
-        glfwSwapInterval(1);
+        glfwSwapInterval(0);
 
         // Make the window visible
         glfwShowWindow(glfwWindow);
@@ -166,7 +166,7 @@ public class Window {
         float endTime;
         float dt = -1.0f;
 
-        setFullscreen(true);
+        //setFullscreen(true);
         while(!glfwWindowShouldClose(glfwWindow)) {
             //Poll events
             glfwPollEvents();
