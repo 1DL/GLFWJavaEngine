@@ -1,7 +1,6 @@
 package components;
 
 import imgui.ImGui;
-import dl.Component;
 import dl.Transform;
 import org.joml.Vector2f;
 import org.joml.Vector4f;

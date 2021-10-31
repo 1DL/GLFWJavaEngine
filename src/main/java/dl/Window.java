@@ -3,9 +3,10 @@ package dl;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import scenes.LevelEditorScene;
+import scenes.LevelScene;
+import scenes.Scene;
 import util.MonitorHandler;
-
-import java.util.ArrayList;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -158,6 +159,7 @@ public class Window {
         this.imguiLayer.initImGui();
 
         Window.changeScene(0);
+        setFullscreen(true);
     }
 
     int count = 0;
@@ -166,7 +168,7 @@ public class Window {
         float endTime;
         float dt = -1.0f;
 
-        //setFullscreen(true);
+
         while(!glfwWindowShouldClose(glfwWindow)) {
             //Poll events
             glfwPollEvents();
