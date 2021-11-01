@@ -3,6 +3,7 @@ package dl;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import renderer.DebugDraw;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -14,6 +15,14 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
+
+    private static final boolean CAPPED = true;
+    private static final boolean UNCAPPED = false;
+
+    private double renderFpsCap = 1.0 / 60;
+    private double updateHzCap = 1.0 / 60;
+    private boolean isRenderingCapped = UNCAPPED;
+    private boolean isUpdatingCapped = UNCAPPED;
 
     private int width, height;
     private String title;
@@ -117,7 +126,6 @@ public class Window {
 
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
 
-        //setFullscreen(true);
 
         if (glfwWindow == NULL){
             throw new IllegalStateException("Failed to create the GLFW window.");
@@ -164,27 +172,44 @@ public class Window {
 
     int count = 0;
     public void loop() {
-        float beginTime = (float)glfwGetTime();
-        float endTime;
-        float dt = -1.0f;
+        double lastUpdateTime = 0;  // number of seconds since the last loop
+        double lastFrameTime = 0;   // number of seconds since the last frame
 
 
         while(!glfwWindowShouldClose(glfwWindow)) {
-            //Poll events
-            glfwPollEvents();
 
-//            count++;
-            //System.out.println(count);
+            double now = glfwGetTime();
+            double deltaTime = now - lastUpdateTime;
 
-            glClearColor(r, g, b, a);
-            glClear(GL_COLOR_BUFFER_BIT);
+            if (isUpdatingCapped) {
+                if ((now - lastUpdateTime) >= updateHzCap) {
+                    update(deltaTime);
+                    lastUpdateTime = now;
+                }
+            } else {
+                update(deltaTime);
+                lastUpdateTime = now;
+            }
 
-//            if (count == 20000) {
-//                setFullscreen(!isFullscreen);
-//                count = 0;
-//            }
-////
-//            if (KeyListener.isKeyPressed(GLFW_KEY_B)) {
+            if (isRenderingCapped) {
+                if ((now - lastFrameTime) >= renderFpsCap) {
+                    render(deltaTime);
+                    lastFrameTime = now;
+                }
+            } else {
+                render(deltaTime);
+                lastFrameTime = now;
+            }
+        }
+
+        currentScene.saveExit();
+    }
+
+    private void update(double dt){
+        //Poll events
+        glfwPollEvents();
+
+        //            if (KeyListener.isKeyPressed(GLFW_KEY_B)) {
 //                System.out.println("hey teste");
 //                //JoystickListener.isButtonPressed(0, GLFW_JOYSTICK_2);
 //            }
@@ -194,19 +219,19 @@ public class Window {
 //            }
 
 
-            if (dt >= 0) {
-                currentScene.update(dt);
-            }
+        currentScene.update((float) dt);
 
-            this.imguiLayer.update(dt, currentScene);
-            glfwSwapBuffers(glfwWindow);
+    }
 
-            endTime = (float)glfwGetTime();
-            dt = endTime - beginTime;
-            beginTime = endTime;
-        }
+    private void render(double dt) {
+        glClearColor(r, g, b, a);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        currentScene.saveExit();
+        currentScene.render();
+        this.imguiLayer.update((float) dt, currentScene);
+        DebugDraw.beginFrame();
+        DebugDraw.draw();
+        glfwSwapBuffers(glfwWindow);
     }
 
     public static int getWidth() {
