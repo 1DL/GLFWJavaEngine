@@ -8,12 +8,14 @@ public class Line2D {
     private Vector2f to;
     private Vector3f color;
     private int lifetime;
+    private float thickness;
 
-    public Line2D(Vector2f from, Vector2f to, Vector3f color, int lifetime) {
+    public Line2D(Vector2f from, Vector2f to, Vector3f color, int lifetime, float thickness) {
         this.from = from;
         this.to = to;
         this.color = color;
         this.lifetime = lifetime;
+        this.thickness = thickness;
     }
 
     public int beginFrame() {
@@ -31,5 +33,9 @@ public class Line2D {
 
     public Vector3f getColor() {
         return color;
+    }
+
+    public float getThickness() {
+        return thickness;
     }
 }

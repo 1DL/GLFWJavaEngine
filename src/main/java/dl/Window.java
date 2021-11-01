@@ -16,13 +16,16 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
 
+    private static final boolean WINDOWED = false;
+    private static final boolean FULLSCREN = true;
     private static final boolean CAPPED = true;
     private static final boolean UNCAPPED = false;
 
     private double renderFpsCap = 1.0 / 60;
     private double updateHzCap = 1.0 / 60;
     private boolean isRenderingCapped = UNCAPPED;
-    private boolean isUpdatingCapped = UNCAPPED;
+    private boolean isUpdatingCapped = CAPPED;
+    private boolean isFullscreen = FULLSCREN;
 
     private int width, height;
     private String title;
@@ -30,7 +33,6 @@ public class Window {
     private ImGuiLayer imguiLayer;
 
     //Monitor related
-    private boolean isFullscreen = false;
     private int[] windowedXSize = {0};
     private int[] windowedYSize = {0};
     private int[] windowedXPos = {0};
@@ -167,19 +169,19 @@ public class Window {
         this.imguiLayer.initImGui();
 
         Window.changeScene(0);
-        setFullscreen(true);
+        setFullscreen(isFullscreen);
     }
 
-    int count = 0;
     public void loop() {
-        double lastUpdateTime = 0;  // number of seconds since the last loop
-        double lastFrameTime = 0;   // number of seconds since the last frame
-
+        double lastUpdateTime = 0;  // number of seconds since the last update
+        double lastFrameTime = 0;   // number of seconds since the last frame render
 
         while(!glfwWindowShouldClose(glfwWindow)) {
-
             double now = glfwGetTime();
             double deltaTime = now - lastUpdateTime;
+
+            //Poll events
+            glfwPollEvents();
 
             if (isUpdatingCapped) {
                 if ((now - lastUpdateTime) >= updateHzCap) {
@@ -190,7 +192,6 @@ public class Window {
                 update(deltaTime);
                 lastUpdateTime = now;
             }
-
             if (isRenderingCapped) {
                 if ((now - lastFrameTime) >= renderFpsCap) {
                     render(deltaTime);
@@ -201,26 +202,12 @@ public class Window {
                 lastFrameTime = now;
             }
         }
-
         currentScene.saveExit();
     }
 
     private void update(double dt){
-        //Poll events
-        glfwPollEvents();
-
-        //            if (KeyListener.isKeyPressed(GLFW_KEY_B)) {
-//                System.out.println("hey teste");
-//                //JoystickListener.isButtonPressed(0, GLFW_JOYSTICK_2);
-//            }
-//
-//            if (KeyListener.isKeyPressed(GLFW_KEY_J)) {
-//                JoystickListener.getAxis(0, GLFW_JOYSTICK_2);
-//            }
-
-
         currentScene.update((float) dt);
-
+        DebugDraw.beginFrame();
     }
 
     private void render(double dt) {
@@ -229,7 +216,6 @@ public class Window {
 
         currentScene.render();
         this.imguiLayer.update((float) dt, currentScene);
-        DebugDraw.beginFrame();
         DebugDraw.draw();
         glfwSwapBuffers(glfwWindow);
     }

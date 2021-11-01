@@ -44,7 +44,7 @@ public class DebugDraw {
         glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * Float.BYTES, 3 * Float.BYTES);
         glEnableVertexAttribArray(1);
 
-        glLineWidth(2.0f);
+//        glLineWidth(1.0f);
     }
 
     public static void beginFrame() {
@@ -81,6 +81,10 @@ public class DebugDraw {
                 vertexArray[index + 4] = color.y;
                 vertexArray[index + 5] = color.z;
                 index += 6;
+
+                //Set line thickness
+
+                glLineWidth(line.getThickness());
             }
         }
 
@@ -114,15 +118,15 @@ public class DebugDraw {
     //============================
     public static void addLine2D(Vector2f from, Vector2f to) {
         //TODO: ADD CONSTANTS FOR COMMON COLORS
-        addLine2D(from, to, new Vector3f(0, 1, 0), 1);
+        addLine2D(from, to, new Vector3f(0, 1, 0), 1, 2.0f);
     }
 
     public static void addLine2D(Vector2f from, Vector2f to, Vector3f color) {
-        addLine2D(from, to, color, 1);
+        addLine2D(from, to, color, 1, 2.0f);
     }
 
-    public static void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifetime) {
+    public static void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifetime, float thickness) {
         if (lines.size() >= MAX_LINES) return;
-        DebugDraw.lines.add(new Line2D(from, to, color, lifetime));
+        DebugDraw.lines.add(new Line2D(from, to, color, lifetime, thickness));
     }
 }
