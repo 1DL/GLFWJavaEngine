@@ -215,8 +215,8 @@ public class Window {
         glClear(GL_COLOR_BUFFER_BIT);
 
         currentScene.render();
-        this.imguiLayer.update((float) dt, currentScene);
         DebugDraw.draw();
+        this.imguiLayer.update((float) dt, currentScene);
         glfwSwapBuffers(glfwWindow);
     }
 
