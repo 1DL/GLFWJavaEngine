@@ -21,9 +21,9 @@ public class Window {
     private static final boolean CAPPED = true;
     private static final boolean UNCAPPED = false;
 
-    private double renderFpsCap = 1.0 / 60;
+    private double renderFpsCap = 1.0 / 120;
     private double updateHzCap = 1.0 / 60;
-    private boolean isRenderingCapped = UNCAPPED;
+    private boolean isRenderingCapped = CAPPED;
     private boolean isUpdatingCapped = CAPPED;
     private boolean isFullscreen = FULLSCREN;
 
@@ -269,5 +269,37 @@ public class Window {
             }
             isFullscreen = false;
         }
+    }
+
+    public double getRenderFpsCap() {
+        return renderFpsCap;
+    }
+
+    public void setRenderFpsCap(int targetFps) {
+        this.renderFpsCap = 1.0 / targetFps;;
+    }
+
+    public double getUpdateHzCap() {
+        return updateHzCap;
+    }
+
+    public void setUpdateHzCap(int targetHz) {
+        this.updateHzCap = 1.0 / targetHz;
+    }
+
+    public boolean isRenderingCapped() {
+        return isRenderingCapped;
+    }
+
+    public void setRenderingCapped(boolean renderingCapped) {
+        isRenderingCapped = renderingCapped;
+    }
+
+    public boolean isUpdatingCapped() {
+        return isUpdatingCapped;
+    }
+
+    public void setUpdatingCapped(boolean updatingCapped) {
+        isUpdatingCapped = updatingCapped;
     }
 }
