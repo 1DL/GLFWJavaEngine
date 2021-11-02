@@ -17,15 +17,15 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class Window {
 
     private static final boolean WINDOWED = false;
-    private static final boolean FULLSCREN = true;
+    private static final boolean FULLSCREEN = true;
     private static final boolean CAPPED = true;
     private static final boolean UNCAPPED = false;
 
-    private double renderFpsCap = 1.0 / 120;
+    private double renderFpsCap = 1.0 / 60;
     private double updateHzCap = 1.0 / 60;
     private boolean isRenderingCapped = CAPPED;
     private boolean isUpdatingCapped = CAPPED;
-    private boolean isFullscreen = FULLSCREN;
+    private boolean isFullscreen = WINDOWED;
 
     private int width, height;
     private String title;
