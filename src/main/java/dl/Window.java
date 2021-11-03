@@ -48,8 +48,8 @@ public class Window {
     private static Scene currentScene;
 
     private Window() {
-        this.width = 1920;
-        this.height = 1080;
+        this.width = 1366;
+        this.height = 768;
         this.title = "Mario - DL Engine";
         this.r = 1;
         this.g = 1;

@@ -65,12 +65,15 @@ public class LevelEditorScene extends Scene {
                         16, 16, 81, 0));
         AssetPool.getTexture("assets/images/blendImage2.png");
     }
-
+    float x = 0.0f;
+    float y = 0.0f;
     @Override
     public void update(float dt) {
         levelEditorStuff.update(dt);
-        //System.out.println("Ortho X: " + MouseListener.getOrthoX());
-        //System.out.println("Ortho Y: " + MouseListener.getOrthoY());
+        DebugDraw.addCircle(new Vector2f(x, y), 64, new Vector3f(1, 0, 0), 1, 2.0f);
+        x += 50f * dt;
+        y += 50f * dt;
+
         for (GameObject go : this.gameObjects) {
             go.update(dt);
         }
