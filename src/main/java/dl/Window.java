@@ -4,6 +4,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import renderer.DebugDraw;
+import renderer.Framebuffer;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -23,14 +24,15 @@ public class Window {
 
     private double renderFpsCap = 1.0 / 60;
     private double updateHzCap = 1.0 / 60;
-    private boolean isRenderingCapped = CAPPED;
     private boolean isUpdatingCapped = CAPPED;
-    private boolean isFullscreen = WINDOWED;
+    private boolean isRenderingCapped = CAPPED;
+    private boolean isFullscreen = FULLSCREEN;
 
     private int width, height;
     private String title;
     private long glfwWindow;
     private ImGuiLayer imguiLayer;
+    private Framebuffer framebuffer;
 
     //Monitor related
     private int[] windowedXSize = {0};
@@ -48,8 +50,8 @@ public class Window {
     private static Scene currentScene;
 
     private Window() {
-        this.width = 1366;
-        this.height = 768;
+        this.width = 1920;
+        this.height = 1080;
         this.title = "Mario - DL Engine";
         this.r = 1;
         this.g = 1;
@@ -168,6 +170,8 @@ public class Window {
         this.imguiLayer = new ImGuiLayer(glfwWindow);
         this.imguiLayer.initImGui();
 
+        this.framebuffer = new Framebuffer(1920, 1080);
+
         Window.changeScene(0);
         setFullscreen(isFullscreen);
     }
@@ -214,8 +218,13 @@ public class Window {
         glClearColor(r, g, b, a);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        currentScene.render();
+        this.framebuffer.bind();
+
         DebugDraw.draw();
+        currentScene.render();
+
+        this.framebuffer.unbind();
+
         this.imguiLayer.update((float) dt, currentScene);
         glfwSwapBuffers(glfwWindow);
     }
