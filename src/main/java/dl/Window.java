@@ -50,8 +50,8 @@ public class Window {
     private static Scene currentScene;
 
     private Window() {
-        this.width = 1920;
-        this.height = 1080;
+        this.width = 1366;
+        this.height = 768;
         this.title = "Mario - DL Engine";
         this.r = 1;
         this.g = 1;
@@ -170,7 +170,8 @@ public class Window {
         this.imguiLayer = new ImGuiLayer(glfwWindow);
         this.imguiLayer.initImGui();
 
-        this.framebuffer = new Framebuffer(1920, 1080);
+        this.framebuffer = new Framebuffer(1366, 768);
+        glViewport(0,0, 1366, 768);
 
         Window.changeScene(0);
         setFullscreen(isFullscreen);
@@ -215,10 +216,11 @@ public class Window {
     }
 
     private void render(double dt) {
+
+        this.framebuffer.bind();
         glClearColor(r, g, b, a);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //this.framebuffer.bind();
 
         DebugDraw.draw();
         currentScene.render();
@@ -310,5 +312,13 @@ public class Window {
 
     public void setUpdatingCapped(boolean updatingCapped) {
         isUpdatingCapped = updatingCapped;
+    }
+
+    public static Framebuffer getFramebuffer() {
+        return get().framebuffer;
+    }
+
+    public static float getTargetAspectRatio() {
+        return 16.0f / 9.0f;
     }
 }
