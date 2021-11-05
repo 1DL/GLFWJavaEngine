@@ -1,5 +1,5 @@
 #type vertex
-#version 330 core
+#version 400 core
 layout (location=0) in vec3 aPos;
 layout (location=1) in vec4 aColor;
 layout (location=2) in vec2 aTexCoords;
@@ -21,8 +21,8 @@ void main()
     gl_Position = uProjection * uView * vec4(aPos, 1.0);
 }
 
-    #type fragment
-    #version 330 core
+#type fragment
+#version 400 core
 
 in vec4 fColor;
 in vec2 fTexCoords;
@@ -34,30 +34,11 @@ out vec4 color;
 
 void main()
 {
-    switch (int(fTexId)) {
-        case 0:
+    if (fTexId > 0) {
+        int id = int(fTexId);
+        color = fColor * texture(uTextures[id], fTexCoords);
+        //color = vec4(fTexCoords, 0, 1);
+    } else {
         color = fColor;
-        break;
-        case 1:
-        color = fColor * texture(uTextures[1], fTexCoords);
-        break;
-        case 2:
-        color = fColor * texture(uTextures[2], fTexCoords);
-        break;
-        case 3:
-        color = fColor * texture(uTextures[3], fTexCoords);
-        break;
-        case 4:
-        color = fColor * texture(uTextures[4], fTexCoords);
-        break;
-        case 5:
-        color = fColor * texture(uTextures[5], fTexCoords);
-        break;
-        case 6:
-        color = fColor * texture(uTextures[6], fTexCoords);
-        break;
-        case 7:
-        color = fColor * texture(uTextures[7], fTexCoords);
-        break;
     }
 }
