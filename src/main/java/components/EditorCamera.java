@@ -8,7 +8,7 @@ import org.joml.Vector2f;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_DECIMAL;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_MIDDLE;
 
-public class EditorCamera extends Component{
+public class EditorCamera extends Component {
 
     private float dragDebounce = 0.032f;
 
@@ -46,7 +46,7 @@ public class EditorCamera extends Component{
         if (MouseListener.getScrollY() != 0.0f) {
             float addValue = (float)Math.pow(Math.abs(MouseListener.getScrollY() * scrollSensitivity),
                     1 / levelEditorCamera.getZoom());
-            addValue *= -Math.signum(MouseListener.getScreenY());
+            addValue *= -Math.signum(MouseListener.getScrollY());
             levelEditorCamera.addZoom(addValue);
         }
 
@@ -58,12 +58,9 @@ public class EditorCamera extends Component{
             levelEditorCamera.position.lerp(new Vector2f(), lerpTime);
             levelEditorCamera.setZoom(this.levelEditorCamera.getZoom() +
                     ((1.0f - levelEditorCamera.getZoom()) * lerpTime));
-
             this.lerpTime += 0.1f * dt;
-
             if (Math.abs(levelEditorCamera.position.x) <= 5.0f &&
                     Math.abs(levelEditorCamera.position.y) <= 5.0f) {
-
                 this.lerpTime = 0.0f;
                 levelEditorCamera.position.set(0f, 0f);
                 this.levelEditorCamera.setZoom(1.0f);
