@@ -3,11 +3,11 @@ package dl;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
-import renderer.DebugDraw;
-import renderer.Framebuffer;
+import renderer.*;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
+import util.AssetPool;
 import util.MonitorHandler;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -33,6 +33,9 @@ public class Window {
     private long glfwWindow;
     private ImGuiLayer imguiLayer;
     private Framebuffer framebuffer;
+    private PickingTexture pickingTexture;
+    private Shader defaultShader;
+    private Shader pickingShader;
 
     //Monitor related
     private int[] windowedXSize = {0};
@@ -153,7 +156,7 @@ public class Window {
         // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
         // Enable v-sync
-        glfwSwapInterval(0);
+        glfwSwapInterval(1);
 
         // Make the window visible
         glfwShowWindow(glfwWindow);
@@ -171,15 +174,20 @@ public class Window {
         this.imguiLayer.initImGui();
 
         this.framebuffer = new Framebuffer(1920, 1080);
+        this.pickingTexture = new PickingTexture(1920, 1080);
         glViewport(0,0, 1920, 1080);
 
         Window.changeScene(0);
-        setFullscreen(isFullscreen);
+        //setFullscreen(isFullscreen);
+
+        defaultShader = AssetPool.getShader("assets/shaders/default.glsl");
+        pickingShader = AssetPool.getShader("assets/shaders/pickingShader.glsl");
     }
 
     public void loop() {
         double lastUpdateTime = 0;  // number of seconds since the last update
         double lastFrameTime = 0;   // number of seconds since the last frame render
+
 
         while(!glfwWindowShouldClose(glfwWindow)) {
             double now = glfwGetTime();
@@ -217,6 +225,27 @@ public class Window {
 
     private void render(double dt) {
 
+        //Render pass 1. Render to picking texture
+        glDisable(GL_BLEND);
+        pickingTexture.enableWriting();
+
+        glViewport(0,0,1920, 1080);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        Renderer.bindShader(pickingShader);
+        currentScene.render();
+
+        if (MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
+            int x = (int) MouseListener.getScreenX();
+            int y = (int) MouseListener.getScreenY();
+            System.out.println(pickingTexture.readPixel(x, y));
+        }
+
+        pickingTexture.disableWriting();
+        glEnable(GL_BLEND);
+
+        //Render pass 2. Render actual game
         this.framebuffer.bind();
         glClearColor(r, g, b, a);
         glClear(GL_COLOR_BUFFER_BIT);
