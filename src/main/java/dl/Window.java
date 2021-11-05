@@ -255,6 +255,8 @@ public class Window {
 
         this.imguiLayer.update((float) dt, currentScene);
         glfwSwapBuffers(glfwWindow);
+
+        MouseListener.endFrame();
     }
 
     public static int getWidth() {
