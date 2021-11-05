@@ -31,7 +31,7 @@ public class RenderBatch implements Comparable<RenderBatch> {
     private final int COLOR_OFFSET = POS_OFFSET + POS_SIZE * Float.BYTES;
     private final int TEX_COORDS_OFFSET = COLOR_OFFSET + COLOR_SIZE * Float.BYTES;
     private final int TEX_ID_OFFSET = TEX_COORDS_OFFSET + TEX_COORDS_SIZE * Float.BYTES;
-    private final int ENTITY_ID_OFFSET = TEX_ID_OFFSET + TEX_COORDS_OFFSET * Float.BYTES;
+    private final int ENTITY_ID_OFFSET = TEX_ID_OFFSET + TEX_ID_SIZE * Float.BYTES;
     private final int VERTEX_SIZE = 10;
     private final int VERTEX_SIZE_BYTES = VERTEX_SIZE * Float.BYTES;
 
@@ -201,7 +201,7 @@ public class RenderBatch implements Comparable<RenderBatch> {
             // Load texture id
             vertices[offset + 8] = texId;
 
-            // Loat entity id
+            // Load entity id
             vertices[offset + 9] = sprite.gameObject.getUid() + 1;
 
             offset += VERTEX_SIZE;

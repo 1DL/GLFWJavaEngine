@@ -24,8 +24,8 @@ public class Window {
 
     private double renderFpsCap = 1.0 / 60;
     private double updateHzCap = 1.0 / 60;
-    private boolean isUpdatingCapped = CAPPED;
-    private boolean isRenderingCapped = CAPPED;
+    private boolean isUpdatingCapped = UNCAPPED;
+    private boolean isRenderingCapped = UNCAPPED;
     private boolean isFullscreen = FULLSCREEN;
 
     private int width, height;
@@ -178,7 +178,7 @@ public class Window {
         glViewport(0,0, 1920, 1080);
 
         Window.changeScene(0);
-        //setFullscreen(isFullscreen);
+        setFullscreen(isFullscreen);
 
         defaultShader = AssetPool.getShader("assets/shaders/default.glsl");
         pickingShader = AssetPool.getShader("assets/shaders/pickingShader.glsl");
@@ -252,6 +252,7 @@ public class Window {
 
 
         DebugDraw.draw();
+        Renderer.bindShader(defaultShader);
         currentScene.render();
 
         this.framebuffer.unbind();

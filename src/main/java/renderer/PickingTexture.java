@@ -29,7 +29,7 @@ public class PickingTexture {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0,
-                GL_RGB, GL_FLOAT,0);
+                GL_RGB, GL_FLOAT, 0);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                 this.pickingTextureId, 0);
 
@@ -57,7 +57,7 @@ public class PickingTexture {
         return true;
     }
 
-    public void enableWriting(){
+    public void enableWriting() {
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
     }
 
@@ -72,6 +72,6 @@ public class PickingTexture {
         float pixels[] = new float[3];
         glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, pixels);
 
-        return (int)(pixels[0]) -1;
+        return (int)(pixels[0]) - 1;
     }
 }
