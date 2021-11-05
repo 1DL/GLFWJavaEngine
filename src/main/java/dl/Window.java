@@ -50,8 +50,8 @@ public class Window {
     private static Scene currentScene;
 
     private Window() {
-        this.width = 1366;
-        this.height = 768;
+        this.width = 1920;
+        this.height = 1080;
         this.title = "Mario - DL Engine";
         this.r = 1;
         this.g = 1;
@@ -170,8 +170,8 @@ public class Window {
         this.imguiLayer = new ImGuiLayer(glfwWindow);
         this.imguiLayer.initImGui();
 
-        this.framebuffer = new Framebuffer(1366, 768);
-        glViewport(0,0, 1366, 768);
+        this.framebuffer = new Framebuffer(1920, 1080);
+        glViewport(0,0, 1920, 1080);
 
         Window.changeScene(0);
         setFullscreen(isFullscreen);
