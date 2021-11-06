@@ -77,12 +77,12 @@ public class GameObject {
         return this.zIndex;
     }
 
-    public int getUid() {
-        return this.uid;
-    }
-
     public static void init(int maxId) {
         ID_COUNTER = maxId;
+    }
+
+    public int getUid() {
+        return this.uid;
     }
 
     public List<Component> getAllComponents() {

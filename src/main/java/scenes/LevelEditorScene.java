@@ -1,19 +1,18 @@
 package scenes;
 
 import components.*;
-import dl.*;
 import imgui.ImGui;
 import imgui.ImVec2;
+import dl.*;
 import org.joml.Vector2f;
 import util.AssetPool;
 
 public class LevelEditorScene extends Scene {
 
-    private GameObject obj1;
     private Spritesheet sprites;
-    SpriteRenderer obj1Sprite;
 
     GameObject levelEditorStuff = new GameObject("LevelEditor", new Transform(new Vector2f()), 0);
+
 
     public LevelEditorScene() {
 
@@ -24,6 +23,7 @@ public class LevelEditorScene extends Scene {
         loadResources();
         sprites = AssetPool.getSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png");
         Spritesheet gizmos = AssetPool.getSpritesheet("assets/images/gizmos.png");
+
         this.camera = new Camera(new Vector2f(-250, 0));
         levelEditorStuff.addComponent(new MouseControls());
         levelEditorStuff.addComponent(new GridLines());
@@ -57,12 +57,13 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void update(float dt) {
-        levelEditorStuff.update(dt);
         this.camera.adjustProjection();
 
         for (GameObject go : this.gameObjects) {
             go.update(dt);
         }
+
+        levelEditorStuff.update(dt);
     }
 
     @Override

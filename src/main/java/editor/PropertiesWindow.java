@@ -1,8 +1,8 @@
 package editor;
 
+import imgui.ImGui;
 import dl.GameObject;
 import dl.MouseListener;
-import imgui.ImGui;
 import renderer.PickingTexture;
 import scenes.Scene;
 
@@ -14,16 +14,16 @@ public class PropertiesWindow {
 
     private float debounce = 0.2f;
 
-    public PropertiesWindow(PickingTexture pickingTexture){
+    public PropertiesWindow(PickingTexture pickingTexture) {
         this.pickingTexture = pickingTexture;
     }
 
-    public void update(float dt, Scene currentScene){
+    public void update(float dt, Scene currentScene) {
         debounce -= dt;
 
         if (MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT) && debounce < 0) {
-            int x = (int) MouseListener.getScreenX();
-            int y = (int) MouseListener.getScreenY();
+            int x = (int)MouseListener.getScreenX();
+            int y = (int)MouseListener.getScreenY();
             int gameObjectId = pickingTexture.readPixel(x, y);
             activeGameObject = currentScene.getGameObject(gameObjectId);
             this.debounce = 0.2f;

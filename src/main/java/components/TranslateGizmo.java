@@ -1,17 +1,17 @@
 package components;
 
+import editor.PropertiesWindow;
 import dl.GameObject;
 import dl.Prefabs;
 import dl.Window;
-import editor.PropertiesWindow;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-public class TranslateGizmo extends Component{
+public class TranslateGizmo extends Component {
     private Vector4f xAxisColor = new Vector4f(1, 0, 0, 1);
     private Vector4f xAxisColorHover = new Vector4f();
     private Vector4f yAxisColor = new Vector4f(0, 1, 0, 1);
-    private Vector4f getyAxisColorHover = new Vector4f();
+    private Vector4f yAxisColorHover = new Vector4f();
 
     private GameObject xAxisObject;
     private GameObject yAxisObject;
@@ -67,7 +67,7 @@ public class TranslateGizmo extends Component{
 
     private void setInactive() {
         this.activeGameObject = null;
-        this.xAxisSprite.setColor(new Vector4f(0,0,0,0));
-        this.yAxisSprite.setColor(new Vector4f(0,0,0,0));
+        this.xAxisSprite.setColor(new Vector4f(0, 0, 0, 0));
+        this.yAxisSprite.setColor(new Vector4f(0, 0, 0, 0));
     }
 }

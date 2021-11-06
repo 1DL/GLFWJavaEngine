@@ -7,7 +7,6 @@ import components.ComponentDeserializer;
 import dl.Camera;
 import dl.GameObject;
 import dl.GameObjectDeserializer;
-import imgui.ImGui;
 import renderer.Renderer;
 
 import java.io.FileWriter;
@@ -53,14 +52,13 @@ public abstract class Scene {
     }
 
     public GameObject getGameObject(int gameObjectId) {
-        Optional<GameObject> result =  this.gameObjects.stream()
+        Optional<GameObject> result = this.gameObjects.stream()
                 .filter(gameObject -> gameObject.getUid() == gameObjectId)
                 .findFirst();
         return result.orElse(null);
     }
 
     public abstract void update(float dt);
-
     public abstract void render();
 
     public Camera camera() {
@@ -86,7 +84,7 @@ public abstract class Scene {
                     objsToSerialize.add(obj);
                 }
             }
-            writer.write(gson.toJson(this.gameObjects));
+            writer.write(gson.toJson(objsToSerialize));
             writer.close();
         } catch(IOException e) {
             e.printStackTrace();

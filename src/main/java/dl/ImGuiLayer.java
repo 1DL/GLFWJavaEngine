@@ -11,6 +11,8 @@ import imgui.type.ImBoolean;
 import renderer.PickingTexture;
 import scenes.Scene;
 
+import java.util.PropertyResourceBundle;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class ImGuiLayer {
