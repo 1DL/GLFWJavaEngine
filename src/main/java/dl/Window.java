@@ -26,7 +26,7 @@ public class Window {
     private double updateHzCap = 1.0 / 60;
     private boolean isUpdatingCapped = CAPPED;
     private boolean isRenderingCapped = CAPPED;
-    private boolean isFullscreen = FULLSCREEN;
+    private boolean isFullscreen = WINDOWED;
 
     private int width, height;
     private String title;
