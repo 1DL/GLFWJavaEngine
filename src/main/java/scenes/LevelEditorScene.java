@@ -88,6 +88,7 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void update(float dt) {
+
         levelEditorStuff.update(dt);
         this.camera.adjustProjection();
 

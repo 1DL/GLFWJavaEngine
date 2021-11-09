@@ -21,12 +21,17 @@ public class Window {
     private static final boolean FULLSCREEN = true;
     private static final boolean CAPPED = true;
     private static final boolean UNCAPPED = false;
+    private static final int  VSYNC_OFF = 0;
+    private static final int VSYNC_ON = 1;
+    private static final int VSYNC_ON_DOUBLE_BUFFER = 2;
+    private static final int VSYNC_ON_TRIPLE_BUFFER = 3;
 
     private double renderFpsCap = 1.0 / 60;
     private double updateHzCap = 1.0 / 60;
     private boolean isUpdatingCapped = CAPPED;
     private boolean isRenderingCapped = CAPPED;
-    private boolean isFullscreen = WINDOWED;
+    private boolean isFullscreen = FULLSCREEN;
+    private int swapInterval = VSYNC_ON;
 
     private int width, height;
     private String title;
@@ -156,7 +161,7 @@ public class Window {
         // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
         // Enable v-sync
-        glfwSwapInterval(1);
+        glfwSwapInterval(swapInterval);
 
         // Make the window visible
         glfwShowWindow(glfwWindow);
@@ -186,17 +191,23 @@ public class Window {
         pickingShader = AssetPool.getShader("assets/shaders/pickingShader.glsl");
     }
 
+    double start_time = System.nanoTime();
+
+    int fpsCounter = 0;
+    int hzCounter = 0;
+
     public void loop() {
         double lastUpdateTime = 0;  // number of seconds since the last update
         double lastFrameTime = 0;   // number of seconds since the last frame render
 
-
         while(!glfwWindowShouldClose(glfwWindow)) {
             double now = glfwGetTime();
             double deltaTime = now - lastUpdateTime;
+            double deltaTimeRender = now - lastFrameTime;
 
             //Poll events
             glfwPollEvents();
+//            glfwWaitEventsTimeout(0.007f);
 
             if (isUpdatingCapped) {
                 if ((now - lastUpdateTime) >= updateHzCap) {
@@ -209,13 +220,14 @@ public class Window {
             }
             if (isRenderingCapped) {
                 if ((now - lastFrameTime) >= renderFpsCap) {
-                    render(deltaTime);
+                    render(deltaTimeRender);
                     lastFrameTime = now;
                 }
             } else {
-                render(deltaTime);
+                render(deltaTimeRender);
                 lastFrameTime = now;
             }
+
         }
         currentScene.saveExit();
     }
@@ -223,6 +235,9 @@ public class Window {
     private void update(double dt){
         currentScene.update((float) dt);
         DebugDraw.beginFrame();
+        hzCounter++;
+
+        System.out.println("Hz: " + (1.0f / dt));
     }
 
     private void render(double dt) {
@@ -255,8 +270,11 @@ public class Window {
 
         this.imguiLayer.update((float) dt, currentScene);
         glfwSwapBuffers(glfwWindow);
+        //glFinish();
 
         MouseListener.endFrame();
+        fpsCounter++;
+        System.out.println("Fps: " + (1.0f / dt));
     }
 
     public static int getWidth() {
