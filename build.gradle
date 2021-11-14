@@ -34,6 +34,9 @@ switch (OperatingSystem.current()) {
 }
 
 dependencies {
+    //Jbox2D
+    implementation "org.jbox2d:jbox2d-library:2.2.1.1"
+
     //GSON
     implementation 'com.google.code.gson:gson:2.8.8'
 
