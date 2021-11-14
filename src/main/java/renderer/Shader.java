@@ -30,13 +30,12 @@ public class Shader {
 
             // Find the first pattern after #type 'pattern'
             int index = source.indexOf("#type") + 6;
-            //eol = End of Line
-            int eol = source.indexOf(System.lineSeparator(), index);
+            int eol = source.indexOf("\r\n", index);
             String firstPattern = source.substring(index, eol).trim();
 
             // Find the second pattern after #type 'pattern'
             index = source.indexOf("#type", eol) + 6;
-            eol = source.indexOf(System.lineSeparator(), index);
+            eol = source.indexOf("\r\n", index);
             String secondPattern = source.substring(index, eol).trim();
 
             if (firstPattern.equals("vertex")) {

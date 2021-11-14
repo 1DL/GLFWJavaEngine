@@ -3,8 +3,8 @@ package editor;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.flag.ImGuiWindowFlags;
-import dl.MouseListener;
-import dl.Window;
+import jade.MouseListener;
+import jade.Window;
 import org.joml.Vector2f;
 
 public class GameViewWindow {

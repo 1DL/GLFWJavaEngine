@@ -1,7 +1,7 @@
 package components;
 
 import editor.PropertiesWindow;
-import dl.MouseListener;
+import jade.MouseListener;
 
 public class TranslateGizmo extends Gizmo {
 

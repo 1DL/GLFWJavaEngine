@@ -1,4 +1,4 @@
-package dl;
+package jade;
 
 import editor.GameViewWindow;
 import editor.PropertiesWindow;
@@ -14,6 +14,7 @@ import scenes.Scene;
 import java.util.PropertyResourceBundle;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static util.Settings.IMGUI_FONT_SIZE;
 
 public class ImGuiLayer {
 
@@ -172,7 +173,7 @@ public class ImGuiLayer {
 
         // Fonts merge example
         fontConfig.setPixelSnapH(true);
-        fontAtlas.addFontFromFileTTF("assets/fonts/segoeui.ttf", 24, fontConfig);
+        fontAtlas.addFontFromFileTTF("assets/fonts/segoeui.ttf", IMGUI_FONT_SIZE, fontConfig);
 
         fontConfig.destroy(); // After all fonts were added we don't need this config more
 

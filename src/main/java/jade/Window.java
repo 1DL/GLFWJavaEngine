@@ -1,4 +1,4 @@
-package dl;
+package jade;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -27,8 +27,6 @@ public class Window {
     private static final int VSYNC_ON_TRIPLE_BUFFER = 3;
 
     private double renderFpsCap = 1.0 / 60;
-    private double updateHzCap = 1.0 / 60;
-    private boolean isUpdatingCapped = CAPPED;
     private boolean isRenderingCapped = CAPPED;
     private boolean isFullscreen = FULLSCREEN;
     private int swapInterval = VSYNC_ON;
@@ -186,95 +184,70 @@ public class Window {
 
         Window.changeScene(0);
         setFullscreen(isFullscreen);
-
-        defaultShader = AssetPool.getShader("assets/shaders/default.glsl");
-        pickingShader = AssetPool.getShader("assets/shaders/pickingShader.glsl");
     }
 
     double start_time = System.nanoTime();
 
     int fpsCounter = 0;
-    int hzCounter = 0;
 
     public void loop() {
         double lastUpdateTime = 0;  // number of seconds since the last update
-        double lastFrameTime = 0;   // number of seconds since the last frame render
+
+        Shader defaultShader = AssetPool.getShader("assets/shaders/default.glsl");
+        Shader pickingShader = AssetPool.getShader("assets/shaders/pickingShader.glsl");
 
         while(!glfwWindowShouldClose(glfwWindow)) {
             double now = glfwGetTime();
-            double deltaTime = now - lastUpdateTime;
-            double deltaTimeRender = now - lastFrameTime;
+            double deltaTime = (now - lastUpdateTime);
 
-            //Poll events
-//            glfwPollEvents();
-            glfwWaitEventsTimeout(0.007f);
+            // Poll events
+            glfwPollEvents();
 
-            if (isUpdatingCapped) {
-                if ((now - lastUpdateTime) >= updateHzCap) {
-                    update(deltaTime);
-                    lastUpdateTime = now;
-                }
-            } else {
-                update(deltaTime);
-                lastUpdateTime = now;
-            }
+            // Render pass 1. Render to picking texture
+            glDisable(GL_BLEND);
+            pickingTexture.enableWriting();
+
+            glViewport(0, 0, 1920, 1080);
+            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            Renderer.bindShader(pickingShader);
+            currentScene.render();
+
+            pickingTexture.disableWriting();
+            glEnable(GL_BLEND);
+
+            // Render pass 2. Render actual game
+            DebugDraw.beginFrame();
+
+            this.framebuffer.bind();
+            glClearColor(r, g, b, a);
+            glClear(GL_COLOR_BUFFER_BIT);
+
             if (isRenderingCapped) {
-                if ((now - lastFrameTime) >= renderFpsCap) {
-                    render(deltaTimeRender);
-                    lastFrameTime = now;
+                if ((now - lastUpdateTime) >= renderFpsCap) {
+                    DebugDraw.draw();
+                    Renderer.bindShader(defaultShader);
+                    currentScene.update((float) deltaTime);
+                    currentScene.render();
                 }
             } else {
-                render(deltaTimeRender);
-                lastFrameTime = now;
+                DebugDraw.draw();
+                Renderer.bindShader(defaultShader);
+                currentScene.update((float) deltaTime);
+                currentScene.render();
             }
+
+            this.framebuffer.unbind();
+
+            this.imguiLayer.update((float) deltaTime, currentScene);
+            glfwSwapBuffers(glfwWindow);
+            MouseListener.endFrame();
 
         }
         currentScene.saveExit();
     }
 
-    private void update(double dt){
-        currentScene.update((float) dt);
-        DebugDraw.beginFrame();
-        hzCounter++;
-
-        System.out.println("Hz: " + (1.0f / dt));
-    }
-
-    private void render(double dt) {
-
-        //Render pass 1. Render to picking texture
-        glDisable(GL_BLEND);
-        pickingTexture.enableWriting();
-
-        glViewport(0,0,1920, 1080);
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        Renderer.bindShader(pickingShader);
-        currentScene.render();
-
-        pickingTexture.disableWriting();
-        glEnable(GL_BLEND);
-
-        //Render pass 2. Render actual game
-        this.framebuffer.bind();
-        glClearColor(r, g, b, a);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-
-        DebugDraw.draw();
-        Renderer.bindShader(defaultShader);
-        currentScene.render();
-
-        this.framebuffer.unbind();
-
-        this.imguiLayer.update((float) dt, currentScene);
-        glfwSwapBuffers(glfwWindow);
-
-        MouseListener.endFrame();
-        fpsCounter++;
-        System.out.println("Fps: " + (1.0f / dt));
-    }
 
     public static int getWidth() {
         return get().width;
@@ -335,13 +308,6 @@ public class Window {
         this.renderFpsCap = 1.0 / targetFps;;
     }
 
-    public double getUpdateHzCap() {
-        return updateHzCap;
-    }
-
-    public void setUpdateHzCap(int targetHz) {
-        this.updateHzCap = 1.0 / targetHz;
-    }
 
     public boolean isRenderingCapped() {
         return isRenderingCapped;
@@ -349,14 +315,6 @@ public class Window {
 
     public void setRenderingCapped(boolean renderingCapped) {
         isRenderingCapped = renderingCapped;
-    }
-
-    public boolean isUpdatingCapped() {
-        return isUpdatingCapped;
-    }
-
-    public void setUpdatingCapped(boolean updatingCapped) {
-        isUpdatingCapped = updatingCapped;
     }
 
     public static Framebuffer getFramebuffer() {

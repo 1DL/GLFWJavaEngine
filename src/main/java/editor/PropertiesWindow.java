@@ -2,8 +2,8 @@ package editor;
 
 import components.NonPickable;
 import imgui.ImGui;
-import dl.GameObject;
-import dl.MouseListener;
+import jade.GameObject;
+import jade.MouseListener;
 import renderer.PickingTexture;
 import scenes.Scene;
 
