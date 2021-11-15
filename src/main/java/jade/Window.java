@@ -27,9 +27,9 @@ public class Window {
     private static final int VSYNC_ON_TRIPLE_BUFFER = 3;
 
     private double renderFpsCap = 1.0 / 60;
-    private boolean isRenderingCapped = CAPPED;
+    private boolean isRenderingCapped = UNCAPPED;
     private boolean isFullscreen = FULLSCREEN;
-    private int swapInterval = VSYNC_ON;
+    private int swapInterval = VSYNC_OFF;
 
     private int width, height;
     private String title;
@@ -203,46 +203,80 @@ public class Window {
             // Poll events
             glfwPollEvents();
 
-            // Render pass 1. Render to picking texture
-            glDisable(GL_BLEND);
-            pickingTexture.enableWriting();
-
-            glViewport(0, 0, 1920, 1080);
-            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            Renderer.bindShader(pickingShader);
-            currentScene.render();
-
-            pickingTexture.disableWriting();
-            glEnable(GL_BLEND);
-
-            // Render pass 2. Render actual game
-            DebugDraw.beginFrame();
-
-            this.framebuffer.bind();
-            glClearColor(r, g, b, a);
-            glClear(GL_COLOR_BUFFER_BIT);
 
             if (isRenderingCapped) {
                 if ((now - lastUpdateTime) >= renderFpsCap) {
+
+                    // Render pass 1. Render to picking texture
+                    glDisable(GL_BLEND);
+                    pickingTexture.enableWriting();
+
+                    glViewport(0, 0, 1920, 1080);
+                    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+                    Renderer.bindShader(pickingShader);
+                    currentScene.render();
+
+                    pickingTexture.disableWriting();
+                    glEnable(GL_BLEND);
+
+                    // Render pass 2. Render actual game
+                    DebugDraw.beginFrame();
+
+                    this.framebuffer.bind();
+                    glClearColor(r, g, b, a);
+                    glClear(GL_COLOR_BUFFER_BIT);
+
                     DebugDraw.draw();
                     Renderer.bindShader(defaultShader);
                     currentScene.update((float) deltaTime);
                     currentScene.render();
+
+                    this.framebuffer.unbind();
+
+                    this.imguiLayer.update((float) deltaTime, currentScene);
+                    glfwSwapBuffers(glfwWindow);
+                    MouseListener.endFrame();
+
+                    lastUpdateTime = now;
                 }
             } else {
+
+                // Render pass 1. Render to picking texture
+                glDisable(GL_BLEND);
+                pickingTexture.enableWriting();
+
+                glViewport(0, 0, 1920, 1080);
+                glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+                Renderer.bindShader(pickingShader);
+                currentScene.render();
+
+                pickingTexture.disableWriting();
+                glEnable(GL_BLEND);
+
+                // Render pass 2. Render actual game
+                DebugDraw.beginFrame();
+
+                this.framebuffer.bind();
+                glClearColor(r, g, b, a);
+                glClear(GL_COLOR_BUFFER_BIT);
+
                 DebugDraw.draw();
                 Renderer.bindShader(defaultShader);
                 currentScene.update((float) deltaTime);
                 currentScene.render();
+
+                this.framebuffer.unbind();
+
+                this.imguiLayer.update((float) deltaTime, currentScene);
+                glfwSwapBuffers(glfwWindow);
+                MouseListener.endFrame();
+
+                lastUpdateTime = now;
             }
-
-            this.framebuffer.unbind();
-
-            this.imguiLayer.update((float) deltaTime, currentScene);
-            glfwSwapBuffers(glfwWindow);
-            MouseListener.endFrame();
 
         }
         currentScene.saveExit();

@@ -2,7 +2,7 @@ package physics2d.components;
 
 import components.Component;
 
-public class Circle2DCollider extends Component {
+public class CircleCollider extends Collider {
     private float radius = 1.0f;
 
     public float getRadius() {
