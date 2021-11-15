@@ -1,12 +1,16 @@
 package jade;
 
+import observers.EventSystem;
+import observers.Observer;
+import observers.events.Event;
+import observers.events.EventType;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import renderer.*;
-import scenes.LevelEditorScene;
-import scenes.LevelScene;
+import scenes.LevelEditorSceneInitializer;
 import scenes.Scene;
+import scenes.SceneInitializer;
 import util.AssetPool;
 import util.MonitorHandler;
 
@@ -15,7 +19,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class Window {
+public class Window implements Observer {
 
     private static final boolean WINDOWED = false;
     private static final boolean FULLSCREEN = true;
@@ -27,18 +31,9 @@ public class Window {
     private static final int VSYNC_ON_TRIPLE_BUFFER = 3;
 
     private double renderFpsCap = 1.0 / 60;
-    private boolean isRenderingCapped = UNCAPPED;
+    private boolean isRenderingCapped = CAPPED;
     private boolean isFullscreen = FULLSCREEN;
     private int swapInterval = VSYNC_OFF;
-
-    private int width, height;
-    private String title;
-    private long glfwWindow;
-    private ImGuiLayer imguiLayer;
-    private Framebuffer framebuffer;
-    private PickingTexture pickingTexture;
-    private Shader defaultShader;
-    private Shader pickingShader;
 
     //Monitor related
     private int[] windowedXSize = {0};
@@ -48,36 +43,36 @@ public class Window {
     private MonitorHandler monitorHandler;
 
 
-    public float r, g, b, a;
-    private boolean fadeToBlack = false;
+    private int width, height;
+    private String title;
+    private long glfwWindow;
+    private ImGuiLayer imguiLayer;
+    private Framebuffer framebuffer;
+    private PickingTexture pickingTexture;
+    private Shader defaultShader;
+    private Shader pickingShader;
+    private boolean runtimePlaying = false;
 
     private static Window window = null;
 
     private static Scene currentScene;
 
+
+
     private Window() {
         this.width = 1920;
         this.height = 1080;
         this.title = "Mario - DL Engine";
-        this.r = 1;
-        this.g = 1;
-        this.b = 1;
-        this.a = 1;
+        EventSystem.addObserver(this);
     }
 
-    public static void changeScene (int newScene) {
-        switch (newScene) {
-            case 0:
-                currentScene = new LevelEditorScene();
-                break;
-            case 1:
-                currentScene = new LevelScene();
-                break;
-            default:
-                assert false : "Unknown scene '" + newScene +"'";
-                break;
+    public static void changeScene (SceneInitializer sceneInitializer) {
+        if (currentScene != null) {
+            currentScene.destroy();
         }
 
+        getImguiLayer().getPropertiesWindow().setActiveGameObject(null);
+        currentScene = new Scene(sceneInitializer);
         currentScene.load();
         currentScene.init();
         currentScene.start();
@@ -182,7 +177,7 @@ public class Window {
         this.imguiLayer = new ImGuiLayer(glfwWindow, pickingTexture);
         this.imguiLayer.initImGui();
 
-        Window.changeScene(0);
+        Window.changeScene(new LevelEditorSceneInitializer());
         setFullscreen(isFullscreen);
     }
 
@@ -225,12 +220,16 @@ public class Window {
                     DebugDraw.beginFrame();
 
                     this.framebuffer.bind();
-                    glClearColor(r, g, b, a);
+                    glClearColor(1, 1, 1, 1);
                     glClear(GL_COLOR_BUFFER_BIT);
 
                     DebugDraw.draw();
                     Renderer.bindShader(defaultShader);
-                    currentScene.update((float) deltaTime);
+                    if (runtimePlaying) {
+                        currentScene.update((float) deltaTime);
+                    } else {
+                        currentScene.editorUpdate((float) deltaTime);
+                    }
                     currentScene.render();
 
                     this.framebuffer.unbind();
@@ -261,7 +260,7 @@ public class Window {
                 DebugDraw.beginFrame();
 
                 this.framebuffer.bind();
-                glClearColor(r, g, b, a);
+                glClearColor(1,1,1,1);
                 glClear(GL_COLOR_BUFFER_BIT);
 
                 DebugDraw.draw();
@@ -277,9 +276,7 @@ public class Window {
 
                 lastUpdateTime = now;
             }
-
         }
-        currentScene.saveExit();
     }
 
 
@@ -361,5 +358,28 @@ public class Window {
 
     public static ImGuiLayer getImguiLayer() {
         return get().imguiLayer;
+    }
+
+    @Override
+    public void onNotify(GameObject object, Event event) {
+        switch (event.type) {
+            case GameEngineStartPlay :
+                this.runtimePlaying = true;
+                currentScene.save();
+                Window.changeScene(new LevelEditorSceneInitializer());
+                break;
+            case GameEngineStopPlay:
+                this.runtimePlaying = false;
+                Window.changeScene(new LevelEditorSceneInitializer());
+                break;
+            case LoadLevel:
+                Window.changeScene(new LevelEditorSceneInitializer());
+                break;
+            case SaveLevel:
+                currentScene.save();
+                break;
+            case UserEvent:
+                break;
+        }
     }
 }

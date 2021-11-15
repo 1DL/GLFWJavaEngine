@@ -1,85 +1,23 @@
 [
   {
-    "uid": 1,
+    "uid": 5,
     "name": "Sprite_Object_Gen",
     "components": [
       {
         "type": "jade.Transform",
         "properties": {
           "position": {
-            "x": 145.44424,
-            "y": 399.67828
+            "x": 160.0,
+            "y": 384.0
           },
           "scale": {
-            "x": 35.40468,
-            "y": 36.22113
+            "x": 32.0,
+            "y": 32.0
           },
           "rotation": 0.0,
           "zIndex": 0,
-          "uid": 18
-        }
-      },
-      {
-        "type": "components.SpriteRenderer",
-        "properties": {
-          "color": {
-            "x": 1.0,
-            "y": 1.0,
-            "z": 1.0,
-            "w": 1.0
-          },
-          "sprite": {
-            "width": 16.0,
-            "height": 16.0,
-            "texture": {
-              "filepath": "assets/images/spritesheets/decorationsAndBlocks.png",
-              "width": 112,
-              "height": 192
-            },
-            "texCoords": [
-              {
-                "x": 0.14285715,
-                "y": 0.9166667
-              },
-              {
-                "x": 0.14285715,
-                "y": 0.8333333
-              },
-              {
-                "x": 0.0,
-                "y": 0.8333333
-              },
-              {
-                "x": 0.0,
-                "y": 0.9166667
-              }
-            ]
-          },
           "uid": 19
         }
-      }
-    ],
-    "doSerialization": true
-  },
-  {
-    "uid": 2,
-    "name": "Sprite_Object_Gen",
-    "components": [
-      {
-        "type": "jade.Transform",
-        "properties": {
-          "position": {
-            "x": 293.64822,
-            "y": 376.4823
-          },
-          "scale": {
-            "x": 46.472046,
-            "y": 40.442383
-          },
-          "rotation": 0.0,
-          "zIndex": 0,
-          "uid": 38
-        }
       },
       {
         "type": "components.SpriteRenderer",
@@ -100,27 +38,59 @@
             },
             "texCoords": [
               {
-                "x": 0.5714286,
+                "x": 1.0,
+                "y": 1.0
+              },
+              {
+                "x": 1.0,
                 "y": 0.9166667
               },
               {
-                "x": 0.5714286,
-                "y": 0.8333333
-              },
-              {
-                "x": 0.42857143,
-                "y": 0.8333333
-              },
-              {
-                "x": 0.42857143,
+                "x": 0.85714287,
                 "y": 0.9166667
+              },
+              {
+                "x": 0.85714287,
+                "y": 1.0
               }
             ]
           },
-          "uid": 39
+          "uid": 20
+        }
+      },
+      {
+        "type": "components.Rigidbody",
+        "properties": {
+          "colliderType": 0,
+          "friction": 0.8,
+          "velocity": {
+            "x": 0.0,
+            "y": 0.5,
+            "z": 0.0
+          },
+          "uid": 21
+        }
+      },
+      {
+        "type": "physics2d.components.Box2DCollider",
+        "properties": {
+          "halfSize": {
+            "x": 1.0,
+            "y": 1.0
+          },
+          "origin": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "offset": {
+            "x": 0.0,
+            "y": 0.0
+          },
+          "uid": 22
         }
       }
     ],
-    "doSerialization": true
+    "doSerialization": true,
+    "isDead": false
   }
 ]
