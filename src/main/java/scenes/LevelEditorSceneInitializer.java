@@ -5,9 +5,6 @@ import imgui.ImGui;
 import imgui.ImVec2;
 import jade.*;
 import org.joml.Vector2f;
-import physics2dtmp.PhysicsSystem2D;
-import physics2dtmp.rigidbody.Rigidbody2D;
-//import sun.security.ssl.Debug;
 import util.AssetPool;
 
 public class LevelEditorSceneInitializer extends SceneInitializer {

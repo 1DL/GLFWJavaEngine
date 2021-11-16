@@ -87,7 +87,7 @@ public abstract class Component {
         }
     }
 
-    public void destroy(){
+    public void destroy() {
 
     }
 

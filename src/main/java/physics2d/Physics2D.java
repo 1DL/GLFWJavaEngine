@@ -11,30 +11,31 @@ import org.jbox2d.dynamics.World;
 import org.joml.Vector2f;
 import physics2d.components.Box2DCollider;
 import physics2d.components.CircleCollider;
-import physics2d.components.RigidBody2D;
+import physics2d.components.Rigidbody2D;
 
 public class Physics2D {
     private Vec2 gravity = new Vec2(0, -10.0f);
     private World world = new World(gravity);
+
     private float physicsTime = 0.0f;
     private float physicsTimeStep = 1.0f / 60.0f;
     private int velocityIterations = 8;
     private int positionIterations = 3;
 
     public void add(GameObject go) {
-        RigidBody2D rb = go.getComponent(RigidBody2D.class);
+        Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
         if (rb != null && rb.getRawBody() == null) {
             Transform transform = go.transform;
 
             BodyDef bodyDef = new BodyDef();
-            bodyDef.angle = (float) Math.toRadians(transform.rotation);
+            bodyDef.angle = (float)Math.toRadians(transform.rotation);
             bodyDef.position.set(transform.position.x, transform.position.y);
             bodyDef.angularDamping = rb.getAngularDamping();
             bodyDef.linearDamping = rb.getLinearDamping();
             bodyDef.fixedRotation = rb.isFixedRotation();
             bodyDef.bullet = rb.isContinuousCollision();
 
-            switch(rb.getBodyType()){
+            switch (rb.getBodyType()) {
                 case Kinematic: bodyDef.type = BodyType.KINEMATIC; break;
                 case Static: bodyDef.type = BodyType.STATIC; break;
                 case Dynamic: bodyDef.type = BodyType.DYNAMIC; break;
@@ -46,11 +47,11 @@ public class Physics2D {
 
             if ((circleCollider = go.getComponent(CircleCollider.class)) != null) {
                 shape.setRadius(circleCollider.getRadius());
-            } else if ((boxCollider = go.getComponent(Box2DCollider.class)) != null){
-                Vector2f halfsize = new Vector2f(boxCollider.getHalfSize()).mul(0.5f);
+            } else if ((boxCollider = go.getComponent(Box2DCollider.class)) != null) {
+                Vector2f halfSize = new Vector2f(boxCollider.getHalfSize()).mul(0.5f);
                 Vector2f offset = boxCollider.getOffset();
                 Vector2f origin = new Vector2f(boxCollider.getOrigin());
-                shape.setAsBox(halfsize.x, halfsize.y, new Vec2(origin.x, origin.y), 0);
+                shape.setAsBox(halfSize.x, halfSize.y, new Vec2(origin.x, origin.y), 0);
 
                 Vec2 pos = bodyDef.position;
                 float xPos = pos.x + offset.x;
@@ -65,7 +66,7 @@ public class Physics2D {
     }
 
     public void destroyGameObject(GameObject go) {
-        RigidBody2D rb = go.getComponent(RigidBody2D.class);
+        Rigidbody2D rb = go.getComponent(Rigidbody2D.class);
         if (rb != null) {
             if (rb.getRawBody() != null) {
                 world.destroyBody(rb.getRawBody());
@@ -78,7 +79,7 @@ public class Physics2D {
         physicsTime += dt;
         if (physicsTime >= 0.0f) {
             physicsTime -= physicsTimeStep;
-            world.step(physicsTime, velocityIterations, positionIterations);
+            world.step(physicsTimeStep, velocityIterations, positionIterations);
         }
     }
 }

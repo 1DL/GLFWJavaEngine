@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import components.Component;
 import components.ComponentDeserializer;
+import imgui.ImGui;
 import jade.Camera;
 import jade.GameObject;
 import jade.GameObjectDeserializer;
@@ -66,7 +67,7 @@ public class Scene {
     }
 
     public void destroy() {
-        for (GameObject go : gameObjects){
+        for (GameObject go : gameObjects) {
             go.destroy();
         }
     }
@@ -82,9 +83,10 @@ public class Scene {
         return result.orElse(null);
     }
 
-    public void editorUpdate(float dt){
+    public void editorUpdate(float dt) {
         this.camera.adjustProjection();
-        for (int i = 0; i < gameObjects.size(); i++) {
+
+        for (int i=0; i < gameObjects.size(); i++) {
             GameObject go = gameObjects.get(i);
             go.editorUpdate(dt);
 
@@ -101,7 +103,7 @@ public class Scene {
         this.camera.adjustProjection();
         this.physics2D.update(dt);
 
-        for (int i = 0; i < gameObjects.size(); i++) {
+        for (int i=0; i < gameObjects.size(); i++) {
             GameObject go = gameObjects.get(i);
             go.update(dt);
 
@@ -113,6 +115,7 @@ public class Scene {
             }
         }
     }
+
     public void render() {
         this.renderer.render();
     }

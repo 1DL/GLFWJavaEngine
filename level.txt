@@ -1,6 +1,6 @@
 [
   {
-    "uid": 5,
+    "uid": 14,
     "name": "Sprite_Object_Gen",
     "components": [
       {
@@ -8,7 +8,7 @@
         "properties": {
           "position": {
             "x": 160.0,
-            "y": 384.0
+            "y": 128.0
           },
           "scale": {
             "x": 32.0,
@@ -38,20 +38,20 @@
             },
             "texCoords": [
               {
-                "x": 1.0,
-                "y": 1.0
-              },
-              {
-                "x": 1.0,
+                "x": 0.71428573,
                 "y": 0.9166667
               },
               {
-                "x": 0.85714287,
-                "y": 0.9166667
+                "x": 0.71428573,
+                "y": 0.8333333
               },
               {
-                "x": 0.85714287,
-                "y": 1.0
+                "x": 0.5714286,
+                "y": 0.8333333
+              },
+              {
+                "x": 0.5714286,
+                "y": 0.9166667
               }
             ]
           },
@@ -59,16 +59,19 @@
         }
       },
       {
-        "type": "components.Rigidbody",
+        "type": "physics2d.components.Rigidbody2D",
         "properties": {
-          "colliderType": 0,
-          "friction": 0.8,
           "velocity": {
             "x": 0.0,
-            "y": 0.5,
-            "z": 0.0
+            "y": 0.0
           },
-          "uid": 21
+          "angularDamping": 0.8,
+          "linearDamping": 0.9,
+          "mass": 11.7,
+          "bodyType": "Dynamic",
+          "fixedRotation": false,
+          "continuousCollision": true,
+          "uid": 42
         }
       },
       {
@@ -86,7 +89,70 @@
             "x": 0.0,
             "y": 0.0
           },
-          "uid": 22
+          "uid": 43
+        }
+      }
+    ],
+    "doSerialization": true,
+    "isDead": false
+  },
+  {
+    "uid": 15,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "jade.Transform",
+        "properties": {
+          "position": {
+            "x": 207.72339,
+            "y": 280.85107
+          },
+          "scale": {
+            "x": 32.0,
+            "y": 32.0
+          },
+          "rotation": 0.0,
+          "zIndex": 0,
+          "uid": 40
+        }
+      },
+      {
+        "type": "components.SpriteRenderer",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "sprite": {
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filepath": "assets/images/spritesheets/decorationsAndBlocks.png",
+              "width": 112,
+              "height": 192
+            },
+            "texCoords": [
+              {
+                "x": 0.85714287,
+                "y": 0.9166667
+              },
+              {
+                "x": 0.85714287,
+                "y": 0.8333333
+              },
+              {
+                "x": 0.71428573,
+                "y": 0.8333333
+              },
+              {
+                "x": 0.71428573,
+                "y": 0.9166667
+              }
+            ]
+          },
+          "uid": 41
         }
       }
     ],

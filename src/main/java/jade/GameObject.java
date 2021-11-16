@@ -81,7 +81,7 @@ public class GameObject {
 
     public void destroy() {
         this.isDead = true;
-        for (int i = 0; i < components.size(); i++) {
+        for (int i=0; i < components.size(); i++) {
             components.get(i).destroy();
         }
     }

@@ -6,8 +6,10 @@ import observers.events.Event;
 import observers.events.EventType;
 
 public class MenuBar {
+
     public void imgui() {
         ImGui.beginMainMenuBar();
+
         if (ImGui.beginMenu("File")) {
             if (ImGui.menuItem("Save", "Ctrl+S")) {
                 EventSystem.notify(null, new Event(EventType.SaveLevel));
@@ -19,6 +21,7 @@ public class MenuBar {
 
             ImGui.endMenu();
         }
+
         ImGui.endMainMenuBar();
     }
 }

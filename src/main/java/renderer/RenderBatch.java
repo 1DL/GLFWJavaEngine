@@ -157,9 +157,9 @@ public class RenderBatch implements Comparable<RenderBatch> {
 
     public boolean destroyIfExists(GameObject go) {
         SpriteRenderer sprite = go.getComponent(SpriteRenderer.class);
-        for (int i = 0; i < numSprites; i++) {
+        for (int i=0; i < numSprites; i++) {
             if (sprites[i] == sprite) {
-                for (int j = i; j < numSprites - 1; j++) {
+                for (int j=i; j < numSprites - 1; j++) {
                     sprites[j] = sprites[j + 1];
                     sprites[j].setDirty();
                 }
@@ -194,7 +194,7 @@ public class RenderBatch implements Comparable<RenderBatch> {
         Matrix4f transformMatrix = new Matrix4f().identity();
         if (isRotated) {
             transformMatrix.translate(sprite.gameObject.transform.position.x,
-                                        sprite.gameObject.transform.position.y, 0f);
+                    sprite.gameObject.transform.position.y, 0f);
             transformMatrix.rotate((float)Math.toRadians(sprite.gameObject.transform.rotation),
                     0, 0, 1);
             transformMatrix.scale(sprite.gameObject.transform.scale.x,
