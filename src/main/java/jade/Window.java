@@ -199,7 +199,6 @@ public class Window implements Observer {
             glClearColor(1, 1, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            System.out.println(dt);
             if (dt >= 0) {
                 DebugDraw.draw();
                 Renderer.bindShader(defaultShader);

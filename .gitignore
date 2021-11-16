@@ -1,5 +1,8 @@
+.idea/*
+build/*
 gradle/*
 .gradle/*
-build/*
-.build/*
-.idea/*
+uiPreview.svg
+tilesets.svg
+assets/fonts/*
+assets/*.svg
