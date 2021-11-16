@@ -1,10 +1,10 @@
 package components;
 
 import editor.PropertiesWindow;
-import dl.GameObject;
-import dl.MouseListener;
-import dl.Prefabs;
-import dl.Window;
+import jade.GameObject;
+import jade.MouseListener;
+import jade.Prefabs;
+import jade.Window;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -53,12 +53,21 @@ public class Gizmo extends Component {
     public void start() {
         this.xAxisObject.transform.rotation = 90;
         this.yAxisObject.transform.rotation = 180;
+        this.xAxisObject.transform.zIndex = 100;
+        this.yAxisObject.transform.zIndex = 100;
         this.xAxisObject.setNoSerialize();
         this.yAxisObject.setNoSerialize();
     }
 
     @Override
     public void update(float dt) {
+        if (using) {
+            this.setInactive();
+        }
+    }
+
+    @Override
+    public void editorUpdate(float dt) {
         if (!using) return;
 
         this.activeGameObject = this.propertiesWindow.getActiveGameObject();

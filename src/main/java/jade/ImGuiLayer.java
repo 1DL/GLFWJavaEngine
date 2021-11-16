@@ -1,6 +1,7 @@
-package dl;
+package jade;
 
 import editor.GameViewWindow;
+import editor.MenuBar;
 import editor.PropertiesWindow;
 import imgui.*;
 import imgui.callback.ImStrConsumer;
@@ -14,6 +15,7 @@ import scenes.Scene;
 import java.util.PropertyResourceBundle;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static util.Settings.IMGUI_FONT_SIZE;
 
 public class ImGuiLayer {
 
@@ -27,11 +29,13 @@ public class ImGuiLayer {
 
     private GameViewWindow gameViewWindow;
     private PropertiesWindow propertiesWindow;
+    private MenuBar menuBar;
 
     public ImGuiLayer(long glfwWindow, PickingTexture pickingTexture) {
         this.glfwWindow = glfwWindow;
         this.gameViewWindow = new GameViewWindow();
         this.propertiesWindow = new PropertiesWindow(pickingTexture);
+        this.menuBar = new MenuBar();
     }
 
     // Initialize Dear ImGui.
@@ -172,7 +176,7 @@ public class ImGuiLayer {
 
         // Fonts merge example
         fontConfig.setPixelSnapH(true);
-        fontAtlas.addFontFromFileTTF("assets/fonts/segoeui.ttf", 24, fontConfig);
+        fontAtlas.addFontFromFileTTF("assets/fonts/segoeui.ttf", IMGUI_FONT_SIZE, fontConfig);
 
         fontConfig.destroy(); // After all fonts were added we don't need this config more
 
@@ -197,6 +201,7 @@ public class ImGuiLayer {
         gameViewWindow.imgui();
         propertiesWindow.update(dt, currentScene);
         propertiesWindow.imgui();
+        menuBar.imgui();
         ImGui.end();
         ImGui.render();
 

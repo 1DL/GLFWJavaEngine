@@ -28,11 +28,11 @@ public class Framebuffer {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    public void bind(){
+    public void bind() {
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
     }
 
-    public void unbind(){
+    public void unbind() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
